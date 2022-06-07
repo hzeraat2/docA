@@ -37,6 +37,20 @@ const init = async () => {
     });
 
     server.route({
+        method: 'DELETE',
+        path: '/jobs/{id}',
+        handler: (request, h) => {
+            if (mockDataStorage[request.params.id]) {
+                delete mockDataStorage[request.params.id];
+                const successfulJobMsg = success.generateSuccessMessage(`Job id: ${request.params.id} is successfully deleted!`, 204)
+                return successfulJobMsg;
+            }
+            const errorMessage = errors.generateErrorMessage(`Did not find job id ${request.params.id}`, 404)
+            return errorMessage;
+        }
+    });
+
+    server.route({
         method: 'PATCH',
         path: '/jobs/{id}',
         handler: async (request, h) => {
