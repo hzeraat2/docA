@@ -29,4 +29,19 @@ const jobSchema = Joi.object({
    updatedAt: Joi.date().iso(),  // optional, string.must be a valid date in ISO 8601 format.defaults to null, automatically set whenever a Job entity is updated.
 });
 
-module.exports = { jobSchema };
+
+const patchJobSchema = Joi.object({
+   type: Joi.string()
+      .pattern(new RegExp('ON_DEMAND|SHIFT|SCHEDULED')),
+   priceInPence: Joi.number()
+      .integer()
+      .min(0),
+   contactEmail: Joi.string()
+      .email(),
+   status: Joi.string()
+      .pattern(new RegExp('AVAILABLE|ASSIGNED|COMPLETED')),
+   createdAt: Joi.date().iso(), // required, string.must be a valid date in ISO 8601 format.automatically set when a Job entity is created.
+   updatedAt: Joi.date().iso(),  // optional, string.must be a valid date in ISO 8601 format.defaults to null, automatically set whenever a Job entity is updated.
+});
+
+module.exports = { jobSchema, patchJobSchema };

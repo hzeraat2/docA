@@ -4,7 +4,6 @@ const Hapi = require('@hapi/hapi');
 const schemas = require('./utilities/schemas');
 const errors = require('./utilities/errors');
 const success = require('./utilities/success');
-const sorting = require('./utilities/sorting');
 
 const mockDataStorage = {} // Dictionary storage => Note: Data should go into a permanent storage like DynamoDB
 
@@ -21,7 +20,7 @@ const init = async () => {
         path: '/jobs',
         handler: (request, h) => {
             // Convert ISO date to time to compare and sort job entries in descending order
-            return Object.values(mockDataStorage).sort((a,b) =>  new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) 
+            return Object.values(mockDataStorage).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
         }
     });
@@ -30,8 +29,38 @@ const init = async () => {
         method: 'GET',
         path: '/jobs/{id}',
         handler: (request, h) => {
+            if (mockDataStorage[request.params.id]) {
+                return mockDataStorage[request.params.id]
+            }
+            const errorMessage = errors.generateErrorMessage(`Did not find job id ${request.params.id}`, 404)
+            return errorMessage;
+        }
+    });
 
-            return `Job id ${request.params.id}`;
+    server.route({
+        method: 'PATCH',
+        path: '/jobs/{id}',
+        handler: async (request, h) => {
+            if (mockDataStorage[request.params.id]) {
+                try {
+                    const payload = request.payload;
+                    const value = await schemas.patchJobSchema.validateAsync(payload);
+
+                    const keys = Object.keys(value);
+                    keys.forEach((key, index) => {
+                        mockDataStorage[request.params.id][key] = value[key]
+                    });
+                    console.log(value);
+                    const successfulJobMsg = success.generateSuccessMessage(`Job id: ${request.params.id} is successfully patched!`)
+                    return successfulJobMsg;
+                }
+                catch (err) {
+                    const errorMessage = errors.generateErrorMessage(err, 400)
+                    return errorMessage;
+                }
+            }
+            const errorMessage = errors.generateErrorMessage(`Did not find job id ${request.params.id}`, 404)
+            return errorMessage;
         }
     });
 
@@ -57,7 +86,7 @@ const init = async () => {
                 return errorMessage;
             }
 
-            
+
         },
     });
 
