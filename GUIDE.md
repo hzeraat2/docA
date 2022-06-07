@@ -1,6 +1,12 @@
 ## How to use the API Guide:
 
-### /jobs
+## Run the app 
+`npm start`
+
+## Run tests 
+`npm test`
+
+### POST endpoint /jobs
 Use the job API like by sending a `POST` request with a body payload that looks like this:
 
 ```

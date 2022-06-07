@@ -1,5 +1,4 @@
-'use strict';
-const Hapi = require('@hapi/hapi');
+Hapi = require('@hapi/hapi');
 
 const schemas = require('./utilities/schemas');
 const errors = require('./utilities/errors');
