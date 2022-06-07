@@ -1,0 +1,24 @@
+{
+  "name": "hamed-zeraatpisheh",
+  "version": "1.0.0",
+  "description": "API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/doc-abode/tech-interviews/hamed-zeraatpisheh.git"
+  },
+  "author": "Hamed Zeraatpisheh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/doc-abode/tech-interviews/hamed-zeraatpisheh/issues"
+  },
+  "homepage": "https://gitlab.com/doc-abode/tech-interviews/hamed-zeraatpisheh#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/joi": "^17.1.1"
+  }
+}
